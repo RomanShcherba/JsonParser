@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +68,7 @@ namespace JsonParser
             }
         }
         /// <summary>
-        /// Method to setting search 
+        /// Method to search settings in console by name
         /// </summary>
         /// <param name="jsonObject">Is a data in JSON file</param>
         /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
@@ -82,7 +82,7 @@ namespace JsonParser
             }
         }
         /// <summary>
-        /// Method to search settings in console by name
+        /// Method to setting search 
         /// </summary>
         /// <param name="jsonObject">Is a data in JSON file</param>
         /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
