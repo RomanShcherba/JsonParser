@@ -9,6 +9,9 @@ namespace JsonParser
 {
     public class Parser
     {
+        /// <summary>
+        /// Method for parsing data from JSON file.
+        /// </summary>
         public static void Main()
         {
             var jsonContent = File.ReadAllText("D:\\EPAM\\JsonParser\\JsonParser\\JSON.json");
@@ -19,7 +22,7 @@ namespace JsonParser
    
             while (true)
             {
-                Console.WriteLine("\nChoose an option:");
+                Console.WriteLine("Choose an option:");
                 Console.WriteLine("1. Interface Settings");
                 Console.WriteLine("2. Media Interface Settings");
                 Console.WriteLine("3. Port Settings");
@@ -33,28 +36,28 @@ namespace JsonParser
                 switch (choice)
                 {
                     case "1":
-                         DisplayInterfaceSettings(jsonObject);
-                         Console.WriteLine("Enter interface setting name: ");
-                         string interfaceSettingName = Console.ReadLine();
-                         SearchInterfaceSetting(jsonObject, interfaceSettingName);
+                        DisplaySettings(jsonObject, "Interface Settings");
+                        ForSettingSearch(jsonObject, "Interface Settings");
                     break;
                     case "2":
-                         DisplayMediaInterfaceSettings(jsonObject);
-                         Console.WriteLine("Enter media interface setting name: ");
-                         string mediaSettingName = Console.ReadLine();
-                         SearchMediaInterfaceSetting(jsonObject, mediaSettingName);
+                        DisplaySettings(jsonObject, "Media Interface Settings");
+                        ForSettingSearch(jsonObject, "Media Interface Settings");
                     break;
                     case "3":
-                        DisplayPortSettings(jsonObject);
+                        DisplaySettings(jsonObject, "Port Settings");
+                        ForSettingSearch(jsonObject, "Port Settings");
                         break;
                     case "4":
-                        DisplayUniqueId(jsonObject);
+                        DisplaySettings(jsonObject, "Unique ID");
+                        ForSettingSearch(jsonObject, "Unique ID");
                         break;
                     case "5":
-                        DisplayMacAddress(jsonObject);
+                        DisplaySettings(jsonObject, "MAC Address");
+                        ForSettingSearch(jsonObject, "MAC Address");
                         break;
                     case "6":
-                        DisplayComponentInterconnectId(jsonObject);
+                        DisplaySettings(jsonObject, "Component Interconnect ID");
+                        ForSettingSearch(jsonObject, "Component Interconnect ID");
                         break;
                     case "7":
                         return;
@@ -64,126 +67,59 @@ namespace JsonParser
                 }
             }
         }
-        public static void DisplayInterfaceSettings(JObject jsonObject)
+        /// <summary>
+        /// Method to setting search 
+        /// </summary>
+        /// <param name="jsonObject">Is a data in JSON file</param>
+        /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+        public static void ForSettingSearch(JObject jsonObject, string sectionName)
         {
-            Console.WriteLine("\nInterfaceSettings");
-
-            if (jsonObject["InterfaceSettings"] is JObject interfaceSettings)
+            Console.WriteLine($"Enter setting name {sectionName}");
+            string settingName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(settingName))
             {
-                foreach (var setting in interfaceSettings)
+                SearchSetting(jsonObject, sectionName, settingName);
+            }
+        }
+        /// <summary>
+        /// Method to search settings in console by name
+        /// </summary>
+        /// <param name="jsonObject">Is a data in JSON file</param>
+        /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+        /// <param name="settingName">Naming of a parameters like (Uniqe Id, TIMEOUT and eg. </param>
+        public static void SearchSetting(JObject jsonObject, string sectionName, string settingName)
+        {
+            Console.WriteLine($"\nSearching for '{settingName}' in {sectionName}:");
+            if (jsonObject[sectionName] is JObject section && section[settingName] != null)
+            {
+                Console.WriteLine($"{settingName}: {section[settingName]}");
+            }
+            else
+            {
+                Console.WriteLine($"Setting '{settingName}' not found in {sectionName}.");
+            }
+        }
+
+        /// <summary>
+        /// General method that display and choosing all settings
+        /// </summary>
+        /// <param name="jsonObject">Is a data from JSON file</param>
+        /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+        public static void DisplaySettings(JObject jsonObject, string sectionName)
+        {
+            Console.WriteLine($"{sectionName} Settings");
+            if (jsonObject[sectionName] is JObject section)
+            {
+                foreach(var item in section)
                 {
-                    Console.WriteLine($"{setting.Key}: {setting.Value}");
+                    Console.WriteLine($"{item.Key}: {item.Value}");
                 }
             }
             else
             {
-                Console.WriteLine("Interface settings not found.");
+                Console.WriteLine($"{sectionName} not found");
             }
         }
-
-        public static void SearchInterfaceSetting(JObject jsonObject, string settingName)
-        {
-            Console.WriteLine($"\nSearch for interface setting '{settingName}':");
-
-            if (jsonObject["Interface Settings"] is JObject interfaceSettings && interfaceSettings[settingName] != null)
-            {
-                Console.WriteLine($"{settingName}: {interfaceSettings[settingName]}");
-            }
-            else
-            {
-                Console.WriteLine($"Interface Setting '{settingName}' not found");
-            }
-        }
-
-        public static void DisplayMediaInterfaceSettings(JObject jsonObject)
-        {
-            Console.WriteLine("\nMedia Interface Settings");
-
-            if (jsonObject["MediaInterfaceSettings"] is JObject mediaInterfaceSettings)
-            {
-                foreach (var setting in mediaInterfaceSettings)
-                {
-                    Console.WriteLine($"{setting.Key}: {setting.Value}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Media Interface settings not found.");
-            }
-        }
-        public static void SearchMediaInterfaceSetting(JObject jsonObject, string settingName)
-        {
-            Console.WriteLine($"\nSearch for media interface setting '{settingName}':");
-
-            if (jsonObject["Media Interface Settings"] is JObject mediaInterfaceSettings && mediaInterfaceSettings[settingName] != null)
-            {
-                Console.WriteLine($"{settingName}: {mediaInterfaceSettings[settingName]}");
-            }
-            else
-            {
-                Console.WriteLine($"Media Interface Setting '{settingName}' not found");
-            }
-        }
-        public static void DisplayPortSettings(JObject jsonObject)
-        {
-            Console.WriteLine("\nPort Settings:");
-            if (jsonObject["Port Settings"] is JObject portSettings)
-            {
-                foreach (var setting in portSettings)
-                {
-                    Console.WriteLine($"{setting.Key}: {setting.Value}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Port settings not found.");
-            }
-        }
-        public static void DisplayUniqueId(JObject jsonObject)
-        {
-            Console.WriteLine("\nUnique ID:");
-            if (jsonObject["Unique ID"] is JObject uniqueId)
-            {
-                foreach (var setting in uniqueId)
-                {
-                    Console.WriteLine($"{setting.Key}: {setting.Value}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Unique ID not found.");
-            }
-        }
-        public static void DisplayMacAddress(JObject jsonObject)
-        {
-            Console.WriteLine("\nMAC Address:");
-            if (jsonObject["MAC Address"] is JObject macAddress)
-            {
-                foreach (var setting in macAddress)
-                {
-                    Console.WriteLine($"{setting.Key}: {setting.Value}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Port settings not found.");
-            }
-        }
-        public static void DisplayComponentInterconnectId(JObject jsonObject)
-        {
-            Console.WriteLine("\nComponent Interconnect ID:");
-            if (jsonObject["Component Interconnect ID"] is JObject componentInterconnectId)
-            {
-                foreach (var setting in componentInterconnectId)
-                {
-                    Console.WriteLine($"{setting.Key}: {setting.Value}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Component Interconnect Id not found.");
-            }
-        }
+      
     }
-
 }
