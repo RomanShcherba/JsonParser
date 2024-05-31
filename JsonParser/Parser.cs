@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace JsonParser
 {
+        /// <summary>
+        /// Parser class
+        /// </summary>
     public class Parser
     {
-        /// <summary>
-        /// Method for parsing data from JSON file.
-        /// </summary>
         public static void Main()
         {
             var jsonContent = File.ReadAllText("D:\\EPAM\\JsonParser\\JsonParser\\JSON.json");
