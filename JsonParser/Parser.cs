@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace JsonParser
 {
+    /// <summary>
+    /// Class to parse JSON data
+    /// </summary>
     public class Parser
     {
         /// <summary>
@@ -14,12 +17,12 @@ namespace JsonParser
         /// </summary>
         public static void Main()
         {
-            var jsonContent = File.ReadAllText("D:\\EPAM\\JsonParser\\JsonParser\\JSON.json");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "JSON.json");
+            var jsonContent = File.ReadAllText(filePath);
             JObject jsonObject = JObject.Parse(jsonContent);
 
             Console.WriteLine("Loaded JSON content:");
             Console.WriteLine(jsonContent);
-   
             while (true)
             {
                 Console.WriteLine("Choose an option:");
@@ -68,12 +71,55 @@ namespace JsonParser
             }
         }
         /// <summary>
-        /// Method to search settings in console by name
+
+        /// Method to setting search 
         /// </summary>
         /// <param name="jsonObject">Is a data in JSON file</param>
         /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
         public static void ForSettingSearch(JObject jsonObject, string sectionName)
         {
+
+            Console.WriteLine($"Enter setting name to search in {sectionName} (or press Enter to skip): ");
+            string settingName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(settingName))
+            {
+                Console.WriteLine($"\nSearching for '{settingName}' in {sectionName}:");
+                if (jsonObject[sectionName] is JObject section)
+                {
+                    if (section[settingName] != null)
+                    {
+                        Console.WriteLine($"{settingName}: {section[settingName]}");
+                    }
+                    else
+                    {
+                        bool found = false;
+                        foreach (var item in section)
+                        {
+                            if (item.Value is JObject nestedObject && nestedObject[settingName] != null)
+                            {
+                                Console.WriteLine($"{item.Key} - {settingName}: {nestedObject[settingName]}");
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            Console.WriteLine($"Setting '{settingName}' not found in {sectionName}.");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"{sectionName} not found.");
+                }
+            }
+        }
+
+            /// <summary>
+            /// General method that display and choosing all settings
+            /// </summary>
+            /// <param name="jsonObject">Is a data from JSON file</param>
+            /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+      
             Console.WriteLine($"Enter setting name {sectionName}");
             string settingName = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(settingName))
@@ -105,21 +151,16 @@ namespace JsonParser
         /// </summary>
         /// <param name="jsonObject">Is a data from JSON file</param>
         /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
-        public static void DisplaySettings(JObject jsonObject, string sectionName)
-        {
-            Console.WriteLine($"{sectionName} Settings");
-            if (jsonObject[sectionName] is JObject section)
-            {
-                foreach(var item in section)
-                {
-                    Console.WriteLine($"{item.Key}: {item.Value}");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"{sectionName} not found");
-            }
-        }
-      
-    }
-}
+
+                    if (item.Value is JObject nestedObject)
+                    {
+                        Console.WriteLine($"{item.Key}:");
+                        foreach (var nestedItem in nestedObject)
+                        {
+                            Console.WriteLine($"    {nestedItem.Key}: {nestedItem.Value}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{item.Key}: {item.Value}");
+                    }
