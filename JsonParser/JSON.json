@@ -1,6 +1,6 @@
 {
   "Interface Settings": {
-    "1th_interface": "interf0",
+    "1st_interface": "interf0",
     "2nd_interface": "interf1"
   },
   "Media Interface Settings": {
@@ -43,9 +43,27 @@
     "MAC_0": "F3:CF:11:2F:DC:BA"
   },
   "Component Interconnect ID": {
-    "DEVICE_0_ID": 28103,
-    "SUBDev_IDS_0": [ 0, 1, 2, 3, 4, 5, 6, 7 ],
-    "DEVICE_1_ID": 2828,
-    "SUBDev_IDS_1": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+    "DEVICE_0": {
+      "DEVICE_ID": 28103,
+      "SUBDev_ID_0": 0,
+      "SUBDev_ID_1": 1,
+      "SUBDev_ID_2": 2,
+      "SUBDev_ID_3": 3,
+      "SUBDev_ID_4": 4,
+      "SUBDev_ID_5": 5,
+      "SUBDev_ID_6": 6,
+      "SUBDev_ID_7": 7
+    },
+    "DEVICE_1": {
+      "DEVICE_ID": 2828,
+      "SUBDev_ID_0": 0,
+      "SUBDev_ID_1": 1,
+      "SUBDev_ID_2": 2,
+      "SUBDev_ID_3": 3,
+      "SUBDev_ID_4": 4,
+      "SUBDev_ID_5": 5,
+      "SUBDev_ID_6": 6,
+      "SUBDev_ID_7": 7
+    }
   }
 }
