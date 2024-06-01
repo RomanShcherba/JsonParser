@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,12 +71,14 @@ namespace JsonParser
             }
         }
         /// <summary>
+
         /// Method to setting search 
         /// </summary>
         /// <param name="jsonObject">Is a data in JSON file</param>
         /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
         public static void ForSettingSearch(JObject jsonObject, string sectionName)
         {
+
             Console.WriteLine($"Enter setting name to search in {sectionName} (or press Enter to skip): ");
             string settingName = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(settingName))
@@ -117,13 +119,39 @@ namespace JsonParser
             /// </summary>
             /// <param name="jsonObject">Is a data from JSON file</param>
             /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
-        public static void DisplaySettings(JObject jsonObject, string sectionName)
-        {
-            Console.WriteLine($"{sectionName} Settings");
-            if (jsonObject[sectionName] is JObject section)
+      
+            Console.WriteLine($"Enter setting name {sectionName}");
+            string settingName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(settingName))
             {
-                foreach(var item in section)
-                {
+                SearchSetting(jsonObject, sectionName, settingName);
+            }
+        }
+        /// <summary>
+        /// Method to setting search 
+        /// </summary>
+        /// <param name="jsonObject">Is a data in JSON file</param>
+        /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+        /// <param name="settingName">Naming of a parameters like (Uniqe Id, TIMEOUT and eg. </param>
+        public static void SearchSetting(JObject jsonObject, string sectionName, string settingName)
+        {
+            Console.WriteLine($"\nSearching for '{settingName}' in {sectionName}:");
+            if (jsonObject[sectionName] is JObject section && section[settingName] != null)
+            {
+                Console.WriteLine($"{settingName}: {section[settingName]}");
+            }
+            else
+            {
+                Console.WriteLine($"Setting '{settingName}' not found in {sectionName}.");
+            }
+        }
+
+        /// <summary>
+        /// General method that display and choosing all settings
+        /// </summary>
+        /// <param name="jsonObject">Is a data from JSON file</param>
+        /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+
                     if (item.Value is JObject nestedObject)
                     {
                         Console.WriteLine($"{item.Key}:");
@@ -136,13 +164,3 @@ namespace JsonParser
                     {
                         Console.WriteLine($"{item.Key}: {item.Value}");
                     }
-                }
-            }
-            else
-            {
-                Console.WriteLine($"{sectionName} not found");
-            }
-        }
-      
-    }
-}
