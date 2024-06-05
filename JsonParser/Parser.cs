@@ -1,9 +1,11 @@
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
 namespace JsonParser
 {
@@ -39,27 +41,27 @@ namespace JsonParser
                 switch (choice)
                 {
                     case "1":
-                        DisplaySettings(jsonObject, "Interface Settings");
+                        DisplayAllSettings(jsonObject, "Interface Settings");
                         ForSettingSearch(jsonObject, "Interface Settings");
-                    break;
+                        break;
                     case "2":
-                        DisplaySettings(jsonObject, "Media Interface Settings");
+                        DisplayAllSettings(jsonObject, "Media Interface Settings");
                         ForSettingSearch(jsonObject, "Media Interface Settings");
-                    break;
+                        break;
                     case "3":
-                        DisplaySettings(jsonObject, "Port Settings");
+                        DisplayAllSettings(jsonObject, "Port Settings");
                         ForSettingSearch(jsonObject, "Port Settings");
                         break;
                     case "4":
-                        DisplaySettings(jsonObject, "Unique ID");
+                        DisplayAllSettings(jsonObject, "Unique ID");
                         ForSettingSearch(jsonObject, "Unique ID");
                         break;
                     case "5":
-                        DisplaySettings(jsonObject, "MAC Address");
+                        DisplayAllSettings(jsonObject, "MAC Address");
                         ForSettingSearch(jsonObject, "MAC Address");
                         break;
                     case "6":
-                        DisplaySettings(jsonObject, "Component Interconnect ID");
+                        DisplayAllSettings(jsonObject, "Component Interconnect ID");
                         ForSettingSearch(jsonObject, "Component Interconnect ID");
                         break;
                     case "7":
@@ -114,12 +116,13 @@ namespace JsonParser
             }
         }
 
-            /// <summary>
-            /// General method that display and choosing all settings
-            /// </summary>
-            /// <param name="jsonObject">Is a data from JSON file</param>
-            /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
-      
+        /// <summary>
+        /// General method that display and choosing all settings
+        /// </summary>
+        /// <param name="jsonObject">Is a data from JSON file</param>
+        /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
+        public static void DisplayAllSettings(JObject jsonObject, string sectionName)
+        {
             Console.WriteLine($"Enter setting name {sectionName}");
             string settingName = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(settingName))
@@ -151,16 +154,23 @@ namespace JsonParser
         /// </summary>
         /// <param name="jsonObject">Is a data from JSON file</param>
         /// <param name="sectionName">Is a parameter from specific section in JSON file</param>
-
-                    if (item.Value is JObject nestedObject)
+        public static void DisplayAndChooseSettings(JObject jsonObject, string sectionName)
+        {
+            foreach (var item in jsonObject)
+            {
+                if (item.Value is JObject nestedObject)
+                {
+                    Console.WriteLine($"{item.Key}:");
+                    foreach (var nestedItem in nestedObject)
                     {
-                        Console.WriteLine($"{item.Key}:");
-                        foreach (var nestedItem in nestedObject)
-                        {
-                            Console.WriteLine($"    {nestedItem.Key}: {nestedItem.Value}");
-                        }
+                        Console.WriteLine($"    {nestedItem.Key}: {nestedItem.Value}");
                     }
-                    else
-                    {
-                        Console.WriteLine($"{item.Key}: {item.Value}");
-                    }
+                }
+                else
+                {
+                    Console.WriteLine($"{item.Key}: {item.Value}");
+                }
+            }
+        }
+    }
+}
